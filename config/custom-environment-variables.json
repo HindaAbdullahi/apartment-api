@@ -1,0 +1,4 @@
+{
+  "db": "hrmDb",
+  "jwtPrivateKey": "jwtKey"
+}
