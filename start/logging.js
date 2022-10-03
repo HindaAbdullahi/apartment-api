@@ -1,9 +1,8 @@
 const { createLogger, transports, format } = require("winston");
-const { combine, timestamp, label, printf, prettyPrint, json } = format;
-require("express-async-errors");
+const { combine, timestamp, metadata, prettyPrint, json } = format;
 
-const logger = createLogger({
-  format: combine(timestamp(), prettyPrint(), json()),
+module.exports = createLogger({
+  format: combine(timestamp(), metadata(), prettyPrint(), json()),
   level: "info",
   transports: [
     new transports.File({
@@ -12,5 +11,3 @@ const logger = createLogger({
     }),
   ],
 });
-
-module.exports = logger;

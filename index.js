@@ -1,15 +1,13 @@
 const express = require("express");
-const bodyParser = require("body-parser");
+require("express-async-errors");
 const mongoose = require("mongoose");
 const config = require("config");
 const error = require("./middleware/error");
 const employees = require("./routes/employees");
-// const logger = require("./start/logging");
 
 const app = express();
+
 app.use(express.json());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 if (!config.get("db") || !config.get("jwtPrivateKey")) {
   throw new Error("FATAL ERROR: jwtPrivateKey or db is not defined.");
@@ -20,8 +18,11 @@ mongoose
   .then(() => console.log("connected hrm db"))
   .catch(() => console.log("error"));
 
+require("./start/logging")();
+
 app.use("/api/employees", employees);
-// app.use(error);
+
+app.use(error);
 
 const port = 3000;
 
