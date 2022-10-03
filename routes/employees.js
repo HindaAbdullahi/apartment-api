@@ -11,34 +11,46 @@ router.get("/", async (req, res) => {
   res.send(emp);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", [validator(validate)], async (req, res) => {
   let emp = await Empoloyee.findOne({ phone: req.body.phone });
   if (emp) return res.status(400).send("phone All ready registered");
-  emp = await Empoloyee.create({
+  emp = Empoloyee({
     name: req.body.name,
     phone: req.body.phone,
     address: req.body.address,
     department: req.body.department,
     salary: req.body.salary,
+    gender: req.body.gender,
   });
 
+  const email = req.body.email;
+  if (email) {
+    emp.email = email;
+  }
+
+  await emp.save();
   res.send(emp);
 });
 
-router.put("/:id", [validateObjectID], async (req, res) => {
-  const emp = await Empoloyee.findByIdAndUpdate(req.params.id, {
-    name: req.body.name,
-    email: req.body.email,
-    phone: req.body.phone,
-    address: req.body.address,
-    department: req.body.department,
-    salary: req.body.salary,
-  });
+router.put(
+  "/:id",
+  [validateObjectID, validator(validate)],
+  async (req, res) => {
+    const emp = await Empoloyee.findByIdAndUpdate(req.params.id, {
+      name: req.body.name,
+      email: req.body.email,
+      phone: req.body.phone,
+      address: req.body.address,
+      department: req.body.department,
+      salary: req.body.salary,
+      gender: req.body.gender,
+    });
 
-  res.send(emp);
-});
+    res.send(emp);
+  }
+);
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", [validateObjectID], async (req, res) => {
   const emp = await Empoloyee.findByIdAndRemove(req.params.id);
 
   res.send(emp);

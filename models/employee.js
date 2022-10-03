@@ -45,6 +45,15 @@ const employeeSchema = new mongoose.Schema(
     image: {
       type: String,
     },
+    gender: {
+      type: String,
+      required: true,
+      enum: ["female", "male"],
+    },
+    createdBy: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
@@ -60,6 +69,8 @@ const validate = (emp) => {
     salary: Joi.number().required(),
     department: Joi.string().min(4).max(50).required(),
     status: Joi.boolean(),
+    gender: Joi.string().required(),
+    createdBy: Joi.objectId().required(),
   });
 
   return schema.validate(emp);

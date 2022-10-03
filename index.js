@@ -1,3 +1,5 @@
+const Joi = require("joi");
+Joi.objectId = require("joi-objectid")(Joi);
 const express = require("express");
 require("express-async-errors");
 const mongoose = require("mongoose");
@@ -18,10 +20,7 @@ mongoose
   .then(() => console.log("connected hrm db"))
   .catch(() => console.log("error"));
 
-require("./start/logging")();
-
 app.use("/api/employees", employees);
-
 app.use(error);
 
 const port = 3000;
