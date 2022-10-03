@@ -2,60 +2,55 @@ const express = require("express");
 const auth = require("../middleware/auth");
 const validateObjectID = require("../middleware/objectdId");
 const validator = require("../middleware/validate");
-const { validate, Empoloyee } = require("../models/employee");
+const { validate, Tenant } = require("../models/tenant");
 
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const emp = await Empoloyee.find({});
-  res.send(emp);
+  const tenant = await Tenant.find({});
+  res.send(tenant);
 });
 
 router.post("/", [validator(validate)], async (req, res) => {
-  let emp = await Empoloyee.findOne({ phone: req.body.phone });
-  if (emp) return res.status(400).send("phone All ready registered");
-  emp = Empoloyee({
+  let tenant = await Tenant.findOne({ phone: req.body.phone });
+  if (tenant) return res.status(400).send("phone All ready registered");
+  tenant = Tenant({
     name: req.body.name,
     phone: req.body.phone,
-    address: req.body.address,
-    department: req.body.department,
-    salary: req.body.salary,
+    guarentor: req.body.guarentor,
     gender: req.body.gender,
     createdBy: req.body.createdBy,
   });
 
   const email = req.body.email;
   if (email) {
-    emp.email = email;
+    tenant.email = email;
   }
 
-  await emp.save();
-  res.send(emp);
+  await tenant.save();
+  res.send(tenant);
 });
 
 router.put(
   "/:id",
   [validateObjectID, validator(validate)],
   async (req, res) => {
-    const emp = await Empoloyee.findByIdAndUpdate(req.params.id, {
+    const tenant = await Tenant.findByIdAndUpdate(req.params.id, {
       name: req.body.name,
-      email: req.body.email,
       phone: req.body.phone,
-      address: req.body.address,
-      department: req.body.department,
-      salary: req.body.salary,
+      guarentor: req.body.guarentor,
       gender: req.body.gender,
       createdBy: req.body.createdBy,
     });
 
-    res.send(emp);
+    res.send(tenant);
   }
 );
 
 router.delete("/:id", [validateObjectID], async (req, res) => {
-  const emp = await Empoloyee.findByIdAndRemove(req.params.id);
+  const tenant = await Tenant.findByIdAndRemove(req.params.id);
 
-  res.send(emp);
+  res.send(tenant);
 });
 
 module.exports = router;

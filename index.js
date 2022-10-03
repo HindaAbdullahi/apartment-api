@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const config = require("config");
 const error = require("./middleware/error");
 const employees = require("./routes/employees");
+const tenants = require("./routes/tenants");
 
 const app = express();
 
@@ -21,6 +22,7 @@ mongoose
   .catch(() => console.log("error"));
 
 app.use("/api/employees", employees);
+app.use("/api/tenants", tenants);
 app.use(error);
 
 const port = 3000;
