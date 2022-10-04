@@ -37,16 +37,20 @@ router.put(
   "/:id",
   [validateObjectID, validator(validate)],
   async (req, res) => {
-    const emp = await Empoloyee.findByIdAndUpdate(req.params.id, {
-      name: req.body.name,
-      email: req.body.email,
-      phone: req.body.phone,
-      address: req.body.address,
-      department: req.body.department,
-      salary: req.body.salary,
-      gender: req.body.gender,
-      createdBy: req.body.createdBy,
-    });
+    const emp = await Empoloyee.findByIdAndUpdate(
+      req.params.id,
+      {
+        name: req.body.name,
+        email: req.body.email,
+        phone: req.body.phone,
+        address: req.body.address,
+        department: req.body.department,
+        salary: req.body.salary,
+        gender: req.body.gender,
+        createdBy: req.body.createdBy,
+      },
+      { new: true }
+    );
 
     res.send(emp);
   }

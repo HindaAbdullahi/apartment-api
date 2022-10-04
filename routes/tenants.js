@@ -35,13 +35,17 @@ router.put(
   "/:id",
   [validateObjectID, validator(validate)],
   async (req, res) => {
-    const tenant = await Tenant.findByIdAndUpdate(req.params.id, {
-      name: req.body.name,
-      phone: req.body.phone,
-      guarentor: req.body.guarentor,
-      gender: req.body.gender,
-      createdBy: req.body.createdBy,
-    });
+    const tenant = await Tenant.findByIdAndUpdate(
+      req.params.id,
+      {
+        name: req.body.name,
+        phone: req.body.phone,
+        guarentor: req.body.guarentor,
+        gender: req.body.gender,
+        createdBy: req.body.createdBy,
+      },
+      { new: true }
+    );
 
     res.send(tenant);
   }
