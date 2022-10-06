@@ -3,6 +3,7 @@ const auth = require("../middleware/auth");
 const validateObjectID = require("../middleware/objectdId");
 const validator = require("../middleware/validate");
 const { validate, Apartment } = require("../models/apartment");
+const { Floor } = require("../models/floor");
 
 const router = express.Router();
 
@@ -46,6 +47,8 @@ router.put(
 
 router.delete("/:id", [validateObjectID], async (req, res) => {
   const apartment = await Apartment.findByIdAndRemove(req.params.id);
+  if (!apartment) return res.status(404).send("invalid delete");
+  await Floor.deleteMany({ "apartment.name": apartment.name });
 
   res.send(apartment);
 });

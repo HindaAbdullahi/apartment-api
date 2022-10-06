@@ -55,11 +55,11 @@ router.put(
   }
 );
 
-// router.delete("/:id", [validateObjectID], async (req, res) => {
-//   const floor = await Floor.findByIdAndRemove(req.params.id);
-//   await Unit.deleteMany({ floor: { name: floor.name } });
-
-//   res.send(floor);
-// });
+router.delete("/:id", [validateObjectID], async (req, res) => {
+  const floor = await Floor.findByIdAndRemove(req.params.id);
+  if (!floor) return res.status(404).send("invalid delete");
+  await Unit.deleteMany({ "floor.name": floor.name });
+  res.send(floor);
+});
 
 module.exports = router;

@@ -60,10 +60,11 @@ router.put(
   }
 );
 
-// router.delete("/:id", [validateObjectID], async (req, res) => {
-//   const unit = await Unit.findByIdAndRemove(req.params.id);
+router.delete("/:id", [validateObjectID], async (req, res) => {
+  const unit = await Unit.findByIdAndRemove(req.params.id);
+  if (!unit) return res.status(404).send("invalid delete");
 
-//   res.send(unit);
-// });
+  res.send(unit);
+});
 
 module.exports = router;
