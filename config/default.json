@@ -1,4 +1,4 @@
 {
-  "db": "mongodb+srv://nadaara:12345@cluster0.qllofdb.mongodb.net/aparment?retryWrites=true&w=majority",
-  "jwtPrivateKey": "mySecureApi"
+  "db": "",
+  "jwtPrivateKey": ""
 }
